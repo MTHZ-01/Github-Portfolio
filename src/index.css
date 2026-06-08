@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Vazir font for Persian */
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css');
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: #050505;
+  color: #9ca3af;
+}
+
+/* When root container has lang-fa class, use Vazir for Persian readability */
+.lang-fa {
+  font-family: Vazir, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.navBlur {
+backdrop-filter: blur(24px);
+}
+
+/* Gradient border for light illumination effect */
+.gradient-border {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(200, 200, 200, 0.02)) border-box;
+  border: 1px solid transparent;
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(200, 200, 200, 0.02)), linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(200, 200, 200, 0.1));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+.gradient-border-subtle {
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02), rgba(200, 200, 200, 0.05)) border-box;
+  border: 1px solid transparent;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+/* Radial gradient for top-light illumination effect */
+.bg-gradient-radial {
+  background: radial-gradient(circle at center, var(--tw-gradient-stops));
+}
