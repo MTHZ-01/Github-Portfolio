@@ -15,7 +15,14 @@ const translations = {
     noRepos: 'هیچ مخزنی یافت نشد.',
     contactTitle: 'بیایید با هم بسازیم',
     contactSubtitle: 'یک پروژه در ذهن دارید؟ می‌خواهید همکاری کنید؟ یا فقط سلام دهید؟',
-    contactCTA: 'یا فقط یک پیام برای من بفرستید ↓'
+    contactCTA: 'یا فقط یک پیام برای من بفرستید ↓',
+    footerConnect: 'با من تماس بگیرید',
+    telegram: 'تلگرام',
+    x: 'ایکس',
+    linkedin: 'لینکدین',
+    github: 'گیت‌هاب',
+    footerCopy: 'ساخته شده با React + Vite + Redux.',
+    footerInspired: 'الهام‌گرفته از SpaceX و Grok'
   },
   en: {
     about: 'About',
@@ -33,7 +40,13 @@ const translations = {
     noRepos: 'No repositories found.',
     contactTitle: "Let's Build Together",
     contactSubtitle: 'Have a project in mind? Want to collaborate? Or just say hi?',
-    contactCTA: 'Or just shoot me a message below ↓'
+    contactCTA: 'Or just shoot me a message below ↓',
+    footerConnect: 'Connect with me',
+    telegram: 'Telegram',
+    x: 'X',
+    linkedin: 'LinkedIn',
+    footerCopy: 'Built with React + Vite + Redux.',
+    footerInspired: 'Inspired by SpaceX & Grok'
   }
 };
 

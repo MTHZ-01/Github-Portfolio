@@ -12,7 +12,7 @@ const Hero = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
           <div className={`${language === 'fa' ? 'md:order-2 text-right' : 'md:order-1 text-left'}`}>
-            <h1 className="relative text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight mb-4 leading-tight bg-gradient-to-b from-gray-100 via-gray-300 to-gray-500 bg-clip-text text-transparent">
+            <h1 className={`relative ${language === 'fa' ? 'text-7xl sm:text-8xl md:text-[6.5rem] font-black tracking-tight leading-[0.95]' : 'text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight leading-tight'} mb-4 bg-gradient-to-b from-gray-100 via-gray-300 to-gray-500 bg-clip-text text-transparent`}>
               {language === 'fa' ? 'ساخت' : 'BUILDING'}
               <br />
               {language === 'fa' ? 'آینده' : 'THE FUTURE'}
