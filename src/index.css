@@ -89,8 +89,8 @@ backdrop-filter: blur(24px);
   opacity: 0.72;
   mix-blend-mode: screen;
   filter: blur(0.03px);
-  animation: dustMove 10s cubic-bezier(.42,.0,.58,1) infinite alternate;
-  will-change: transform, opacity;
+  animation: none;
+  will-change: opacity;
 }
 .dust-scene::after {
   content: '';
@@ -106,7 +106,7 @@ backdrop-filter: blur(24px);
   background-repeat: no-repeat;
   opacity: 0.28;
   mix-blend-mode: screen;
-  animation: dustDrift 14s cubic-bezier(.45,.05,.55,.95) infinite alternate;
+  animation: lightShade 14s cubic-bezier(.45,.05,.55,.95) infinite;
   will-change: transform, opacity;
 }
 @keyframes dustMove {
