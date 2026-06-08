@@ -5,10 +5,10 @@ const Contact = () => {
   const { language } = useSelector((state) => state.theme);
 
   return (
-    <section id="contact" className="py-24 bg-space-dark">
-      <div className="max-w-4xl mx-auto px-6 text-center">
-        <h2 className="text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-b from-gray-100 via-gray-300 to-gray-500 bg-clip-text text-transparent">{language === 'fa' ? 'بیایید با هم بسازیم' : "Let's Build Together"}</h2>
-        <p className="text-lg md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+    <section id="contact" className="py-20 sm:py-24 bg-space-dark">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 sm:mb-8 bg-gradient-to-b from-gray-100 via-gray-300 to-gray-500 bg-clip-text text-transparent">{language === 'fa' ? 'بیایید با هم بسازیم' : "Let's Build Together"}</h2>
+        <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
           {language === 'fa' ? 'یک پروژه در ذهن دارید؟ می‌خواهید همکاری کنید؟ یا فقط سلام دهید؟' : 'Have a project in mind? Want to collaborate? Or just say hi?'}
         </p>
 

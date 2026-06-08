@@ -10,13 +10,16 @@ function App() {
   const { language } = useSelector((state) => state.theme);
 
   return (
-    <div dir={language === 'fa' ? 'rtl' : 'ltr'} className={`min-h-screen bg-space-black text-gray-100 overflow-x-hidden ${language === 'fa' ? 'lang-fa' : ''}`}>
-      <Navbar />
-      <Hero />
-      <About />
-      <Projects />
-      <Contact />
-      <Footer />
+    <div dir={language === 'fa' ? 'rtl' : 'ltr'} className={`min-h-screen bg-space-black text-gray-100 overflow-x-hidden relative ${language === 'fa' ? 'lang-fa' : ''}`}>
+      <div className="dust-scene" aria-hidden="true" />
+      <div className="relative z-10">
+        <Navbar />
+        <Hero />
+        <About />
+        <Projects />
+        <Contact />
+        <Footer />
+      </div>
     </div>
   );
 }

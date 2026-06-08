@@ -5,21 +5,21 @@ const About = () => {
   const { language } = useSelector((state) => state.theme);
 
   return (
-    <section id="about" className="py-24 bg-space-dark">
-      <div className="max-w-5xl mx-auto px-6">
-        <h2 className="text-4xl md:text-5xl font-bold mb-8 text-center bg-gradient-to-b from-gray-100 via-gray-300 to-gray-500 bg-clip-text text-transparent">{translations[language].aboutTitle}</h2>
+    <section id="about" className="py-20 sm:py-24 bg-space-dark">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-center bg-gradient-to-b from-gray-100 via-gray-300 to-gray-500 bg-clip-text text-transparent">{translations[language].aboutTitle}</h2>
 
-        <div className={`grid md:grid-cols-2 gap-12 items-center ${language === 'fa' ? 'text-right' : 'text-left'}`}>
+        <div className={`grid gap-10 md:grid-cols-2 items-center ${language === 'fa' ? 'text-right' : 'text-left'}`}>
           <div>
-            <p className="text-lg text-gray-300 leading-relaxed">
+            <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
               {translations[language].aboutParagraph1}
             </p>
-            <p className="text-lg text-gray-300 mt-6 leading-relaxed">
+            <p className="text-base sm:text-lg text-gray-300 mt-6 leading-relaxed">
               {translations[language].aboutParagraph2}
             </p>
           </div>
 
-          <div className="space-y-6 text-sm uppercase tracking-widest">
+          <div className="space-y-4 sm:space-y-5 text-sm sm:text-base uppercase tracking-widest">
             <div>{language === 'fa' ? 'محل: زمین' : 'Based in • Earth'}</div>
             <div>{language === 'fa' ? 'در حال یادگیری: Next.js + AI' : 'Currently Learning • Next.js + AI'}</div>
             <div>{language === 'fa' ? 'پشته مورد علاقه: React + Tailwind + Node' : 'Favorite Stack • React + Tailwind + Node'}</div>
