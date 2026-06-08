@@ -52,16 +52,14 @@ backdrop-filter: blur(24px);
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  background: radial-gradient(circle at 18% 14%, rgba(96,165,250,0.36) 0, transparent 18%),
-              radial-gradient(circle at 80% 12%, rgba(139,92,246,0.28) 0, transparent 16%),
-              radial-gradient(circle at 48% 72%, rgba(255,255,255,0.24) 0, transparent 24%),
-              linear-gradient(180deg, rgba(255,255,255,0.15), transparent 50%);
+  background: radial-gradient(circle at 25% 20%, rgba(96,165,250,0.24) 0, transparent 18%),
+              radial-gradient(circle at 75% 12%, rgba(139,92,246,0.18) 0, transparent 16%);
   background-repeat: no-repeat;
-  background-size: 260% 260%, 240% 240%, 160% 160%, 200% 200%;
-  background-position: 0% 0%, 100% 8%, 50% 70%, 50% 18%;
+  background-size: 220% 220%, 200% 200%;
+  background-position: 0% 0%, 100% 8%;
   background-blend-mode: screen;
-  filter: blur(0.6px);
-  animation: lightShift 18s ease-in-out infinite;
+  filter: blur(0.4px);
+  animation: lightShift 20s ease-in-out infinite;
 }
 .dust-scene::before {
   content: '';
@@ -96,87 +94,30 @@ backdrop-filter: blur(24px);
   content: '';
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle at 10% 18%, rgba(255,255,255,0.16) 0, transparent 10%),
-                    radial-gradient(circle at 82% 22%, rgba(255,255,255,0.12) 0, transparent 12%),
-                    radial-gradient(circle at 40% 68%, rgba(255,255,255,0.10) 0, transparent 14%),
-                    radial-gradient(circle at 25% 42%, rgba(255,255,255,0.14) 0, transparent 8%),
-                    radial-gradient(circle at 58% 55%, rgba(255,255,255,0.12) 0, transparent 10%),
-                    radial-gradient(circle at 72% 30%, rgba(255,255,255,0.10) 0, transparent 8%),
-                    radial-gradient(circle at 86% 78%, rgba(255,255,255,0.08) 0, transparent 10%);
+  background-image: radial-gradient(circle at 12% 22%, rgba(255,255,255,0.18) 0, transparent 12%),
+                    radial-gradient(circle at 82% 18%, rgba(255,255,255,0.10) 0, transparent 14%);
   background-repeat: no-repeat;
-  opacity: 0.28;
+  opacity: 0.24;
   mix-blend-mode: screen;
-  animation: lightShade 14s cubic-bezier(.45,.05,.55,.95) infinite;
-  will-change: transform, opacity;
-}
-@keyframes dustMove {
-  0%, 100% {
-    background-position: 8% 12%, 18% 30%, 27% 6%, 35% 50%, 44% 22%, 52% 85%, 63% 65%, 72% 35%, 78% 48%, 87% 60%, 30% 80%, 55% 85%, 92% 18%, 10% 70%, 50% 15%, 23% 56%, 68% 75%;
-    transform: translate(0px, 0px) rotate(0deg);
-    opacity: 0.72;
-  }
-  20% {
-    background-position: 7.5% 16%, 19% 26%, 29% 4%, 34% 54%, 42% 18%, 56% 88%, 60% 63%, 74% 38%, 81% 61%, 89% 55%, 26% 82%, 58% 82%, 94% 15%, 12% 68%, 52% 13%, 21% 60%, 70% 77%;
-    transform: translate(5px, -3px) rotate(0.04deg);
-    opacity: 0.70;
-  }
-  40% {
-    background-position: 9% 8%, 17% 34%, 25% 10%, 38% 48%, 46% 26%, 50% 80%, 66% 68%, 70% 30%, 76% 52%, 92% 63%, 33% 82%, 53% 88%, 90% 21%, 9% 74%, 46% 18%, 27% 60%, 65% 79%;
-    transform: translate(12px, -8px) rotate(-0.12deg);
-    opacity: 0.74;
-  }
-  60% {
-    background-position: 12% 14%, 22% 22%, 30% 2%, 31% 56%, 39% 14%, 60% 90%, 58% 58%, 76% 42%, 84% 58%, 94% 54%, 28% 86%, 62% 78%, 96% 12%, 14% 64%, 56% 10%, 19% 63%, 72% 73%;
-    transform: translate(20px, -12px) rotate(0.1deg);
-    opacity: 0.69;
-  }
-  80% {
-    background-position: 10% 10%, 16% 32%, 24% 8%, 37% 52%, 48% 24%, 49% 82%, 69% 62%, 73% 32%, 79% 51%, 91% 59%, 31% 84%, 57% 86%, 92% 18%, 11% 70%, 48% 16%, 24% 58%, 67% 76%;
-    transform: translate(18px, -7px) rotate(0.08deg);
-    opacity: 0.71;
-  }
-}
-@keyframes dustDrift {
-  0%, 100% {
-    background-position: 10% 18%, 82% 22%, 40% 68%, 25% 42%, 58% 55%, 72% 30%, 86% 78%;
-    transform: translate(0px, 0px) rotate(0deg);
-    opacity: 0.28;
-  }
-  20% {
-    background-position: 12% 14%, 80% 28%, 42% 66%, 22% 48%, 60% 50%, 78% 28%, 88% 74%;
-    transform: translate(-8px, 4px) rotate(0.05deg);
-    opacity: 0.26;
-  }
-  40% {
-    background-position: 6% 22%, 84% 18%, 36% 72%, 29% 36%, 56% 60%, 68% 34%, 83% 82%;
-    transform: translate(11px, -6px) rotate(-0.08deg);
-    opacity: 0.32;
-  }
-  60% {
-    background-position: 14% 16%, 78% 26%, 44% 64%, 20% 46%, 62% 52%, 74% 26%, 91% 76%;
-    transform: translate(-3px, 7px) rotate(0.07deg);
-    opacity: 0.27;
-  }
-  80% {
-    background-position: 9% 20%, 81% 20%, 39% 70%, 24% 40%, 59% 58%, 70% 32%, 87% 80%;
-    transform: translate(6px, -4px) rotate(-0.03deg);
-    opacity: 0.29;
-  }
+  animation: lightShade 20s ease-in-out infinite;
+  will-change: opacity;
 }
 @keyframes lightShift {
   0%, 100% {
-    background-position: 0% 0%, 100% 8%, 50% 70%, 50% 18%;
+    background-position: 0% 0%, 100% 8%;
   }
   50% {
-    background-position: 12% 6%, 88% 18%, 45% 65%, 52% 12%;
+    background-position: 10% 6%, 90% 18%;
   }
 }
 @keyframes lightShade {
   0%, 100% {
-    background-position: 15% 20%, 80% 18%, 42% 70%;
+    background-position: 12% 22%, 82% 18%;
+    opacity: 0.24;
   }
   50% {
-    background-position: 10% 28%, 86% 12%, 35% 72%;
+    background-position: 14% 28%, 78% 14%;
+    opacity: 0.2;
   }
 }
 
