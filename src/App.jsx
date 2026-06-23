@@ -18,23 +18,32 @@ import MobileSectionRail from './components/MobileSectionRail';
 const variants = {
   hidden: {
     opacity: 0,
-    y: 30,         // Reduced from 100px to prevent massive layout recalculations
-    scale: 0.99,   // Subtle scale gives an elegant "pop" without killing performance
+    y: 100,
+    scale: 0.96,
+    filter: 'blur(14px)',
   },
+
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
+    filter: 'blur(0px)',
+
     transition: {
-      duration: 0.6,          // Snappier duration makes the site feel lightning fast
-      ease: [0.16, 1, 0.3, 1], // Custom hardware-accelerated cubic-bezier ease
+      duration: 1.2,
+      ease: [0.16, 1, 0.3, 1],
     },
   },
+
   exit: {
     opacity: 0,
-    y: -20,
+    y: -50,
+    scale: 0.98,
+    filter: 'blur(10px)',
+
     transition: {
-      duration: 0.3,
+      duration: 0.75,
+      ease: [0.16, 1, 0.3, 1],
     },
   },
 };
