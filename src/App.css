@@ -198,3 +198,7 @@ section {
   backface-visibility: hidden;
   perspective: 1000px;
 }
+
+.marTopHeroFix {
+  margin-top: 20px !important;
+}

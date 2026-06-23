@@ -20,10 +20,9 @@ const Hero = () => {
           {/* TEXT SIDE */}
           <div
             className={`
-              ${
-                language === 'fa'
-                  ? 'md:order-2 text-right'
-                  : 'md:order-1 text-left'
+              ${language === 'fa'
+                ? 'md:order-2 text-right'
+                : 'md:order-1 text-left'
               }
               md:w-[58%]
               relative
@@ -31,16 +30,15 @@ const Hero = () => {
             `}
           >
 
-            <div className="mb-4 inline-block px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.06] backdrop-blur-xl text-gray-400 text-sm tracking-wide">
+            <div className="mt-5 sm:mt-0 mb-4 inline-block px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.06] backdrop-blur-xl text-gray-400 text-sm tracking-wide">
               SOFTWARE • AI • AUTOMATION
             </div>
 
             <h1
               className={`
-                ${
-                  language === 'fa'
-                    ? 'text-6xl sm:text-7xl md:text-[6rem] font-black leading-[0.95]'
-                    : 'text-5xl sm:text-6xl md:text-8xl font-black leading-[0.95]'
+                ${language === 'fa'
+                  ? 'text-6xl sm:text-7xl md:text-[6rem] font-black leading-[0.95]'
+                  : 'text-5xl sm:text-6xl md:text-8xl font-black leading-[0.95]'
                 }
                 tracking-tight
                 mb-6
@@ -106,10 +104,9 @@ const Hero = () => {
           {/* IMAGE SIDE — Apple overlap style */}
           <div
             className={`
-              ${
-                language === 'fa'
-                  ? 'md:order-1 md:mr-[-9rem]'
-                  : 'md:order-2 md:-ml-36'
+              ${language === 'fa'
+                ? 'md:order-1 md:mr-[-9rem]'
+                : 'md:order-2 md:-ml-36'
               }
               flex justify-center
               md:w-[42%]
