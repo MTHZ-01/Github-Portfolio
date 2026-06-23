@@ -15,27 +15,28 @@ import Contact from './sections/Contact';
 import SectionRail from './components/SectionRail';
 import MobileSectionRail from './components/MobileSectionRail';
 
+// A fast, layout-safe helper to detect screens smaller than a standard desktop breakpoint (768px)
+const isMobile = () => typeof window !== 'undefined' && window.innerWidth < 768;
+
 const variants = {
-  hidden: {
+  hidden: () => ({
     opacity: 0,
-    y: 100,
-    scale: 0.96,
-    filter: 'blur(14px)',
-    transition: {
-      duration: 0.75,
-      ease: [0.16, 1, 0.3, 1],
-    }
-  },
-  visible: {
+    // Mobile fallback: Static values with 0px offset and no blur filter computation
+    y: isMobile() ? 0 : 100,
+    scale: isMobile() ? 1 : 0.96,
+    filter: isMobile() ? 'none' : 'blur(14px)',
+  }),
+  visible: () => ({
     opacity: 1,
     y: 0,
     scale: 1,
-    filter: 'blur(0px)',
+    filter: isMobile() ? 'none' : 'blur(0px)',
     transition: {
-      duration: 1.2,
+      // Mobile fallback: Practically instant transitions to avoid blocking rendering cycles
+      duration: isMobile() ? 0.01 : 1.2,
       ease: [0.16, 1, 0.3, 1],
     },
-  },
+  }),
 };
 
 class AnimatedSection extends Component {
@@ -46,6 +47,13 @@ class AnimatedSection extends Component {
   observer = null;
 
   componentDidMount() {
+    // Optimization: If a user is on a mobile device, skip creating intersection observers completely.
+    // This removes layout tracking processing from the mobile touch/scroll engine.
+    if (isMobile()) {
+      this.setState({ visible: true });
+      return;
+    }
+
     this.observer = new IntersectionObserver(
       ([entry]) => {
         this.setState({
@@ -53,8 +61,8 @@ class AnimatedSection extends Component {
         });
       },
       {
-        threshold: 0.12, // Lowered slightly to capture incoming sections smoother
-        rootMargin: '-50px 0px -50px 0px', // Wider viewport sweet-spot
+        threshold: 0.12,
+        rootMargin: '-50px 0px -50px 0px',
       }
     );
 
@@ -76,21 +84,19 @@ class AnimatedSection extends Component {
       <section
         id={id}
         ref={(el) => (this.container = el)}
-        className="transform-gpu" // Forces a unique composite rendering layer
+        className="transform-gpu"
         style={{
-          minHeight: '100vh',
+          minHeight: isMobile() ? 'auto' : '100vh', // Keeps fluid layouts on shorter mobile viewports
         }}
       >
-        {/* REMOVED AnimatePresence: Components now stay mounted in the DOM.
-          Visibility states toggle seamlessly via the animate property, preventing 
-          layout shifts, scroll rail calculation drops, and component rebuilds.
-        */}
         <motion.div
           variants={variants}
+          // Custom properties can accept dynamic function profiles
+          custom={this.state.visible}
           initial="hidden"
           animate={this.state.visible ? "visible" : "hidden"}
           style={{
-            willChange: 'transform, opacity, filter',
+            willChange: isMobile() ? 'auto' : 'transform, opacity, filter',
           }}
         >
           {children}
