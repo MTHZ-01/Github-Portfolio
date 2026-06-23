@@ -4,15 +4,26 @@ import translations from '../i18n';
 import softwareImg from '../assets/Photos/software.png';
 import certImg from '../assets/Photos/Certificate.png';
 
+// Global memory cache space to survive component lifecycle switches
+let cachedRepos = null;
+
 const Projects = () => {
-  const [repos, setRepos] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [repos, setRepos] = useState(cachedRepos || []);
+  const [loading, setLoading] = useState(!cachedRepos); // Skip loading UI if cache hits
   const [error, setError] = useState(null);
+  const { language } = useSelector((state) => state.theme);
 
   useEffect(() => {
-    const username = "MTHZ-01";
+    // If we already have the repositories cached, don't ping GitHub's API
+    if (cachedRepos) {
+      return;
+    }
 
-    fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=6`)
+    const username = "MTHZ-01";
+    const controller = new AbortController();
+    const { signal } = controller;
+
+    fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=6`, { signal })
       .then(res => {
         if (!res.ok) {
           throw new Error(`GitHub API error: ${res.status}`);
@@ -20,22 +31,30 @@ const Projects = () => {
         return res.json();
       })
       .then(data => {
-        setRepos(Array.isArray(data) ? data : []);
+        const validatedData = Array.isArray(data) ? data : [];
+        cachedRepos = validatedData; // Set the global cache reference
+        setRepos(validatedData);
         setLoading(false);
       })
       .catch(err => {
+        if (err.name === 'AbortError') return; // Gracefully handle cleanup cancellation
         console.error(err);
         setError(err.message);
         setLoading(false);
       });
-  }, []);
 
-  const { language } = useSelector((state) => state.theme);
+    // Aborts the network pipeline if component unmounts mid-transit
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
   return (
     <section id="projects" className="py-24">
       <div className="max-w-6xl mx-auto px-6">
-        <h2 className="text-4xl md:text-5xl font-bold mb-8 text-center bg-gradient-to-b from-gray-100 via-gray-300 to-gray-500 bg-clip-text text-transparent">{translations[language].projects}</h2>
+        <h2 className="text-4xl md:text-5xl font-bold mb-8 text-center bg-gradient-to-b from-gray-100 via-gray-300 to-gray-500 bg-clip-text text-transparent">
+          {translations[language].projects}
+        </h2>
 
         {loading && (
           <p className="text-center text-xl text-gray-400">Loading projects from GitHub...</p>
@@ -77,12 +96,18 @@ const Projects = () => {
           </div>
         )}
 
-        {/* Featured product / certificate */}
+        {/* Featured product / certificate section */}
         <div className="mt-12 bg-gray-800/70 p-6 rounded-3xl border border-gray-600/20 shadow-[inset_0_1px_2px_rgba(150,150,150,0.06),0_16px_40px_rgba(0,0,0,0.12)]">
           <h3 className="text-2xl font-semibold mb-4">{translations[language].featuredProduct}</h3>
           <div className="flex flex-col gap-6 md:flex-row items-start">
             <div className="w-full md:w-1/2 rounded-3xl overflow-hidden border border-gray-600/15 shadow-[inset_0_1px_1px_rgba(150,150,150,0.04)]">
-              <img src={softwareImg} alt="Developed software" className="w-full h-56 sm:h-64 object-cover block" />
+              <img 
+                src={softwareImg} 
+                alt="Developed software" 
+                loading="lazy"
+                decoding="async" // Offloads image assembly calculation from UI thread
+                className="w-full h-56 sm:h-64 object-cover block" 
+              />
             </div>
 
             <div className="w-full md:w-1/2">
@@ -92,7 +117,13 @@ const Projects = () => {
               <div className="mt-4">
                 <h4 className="text-lg font-medium mb-2">Certificate</h4>
                 <a href={certImg} target="_blank" rel="noreferrer" className="inline-block rounded-lg overflow-hidden border border-gray-600/15 shadow-[inset_0_1px_1px_rgba(150,150,150,0.04)]">
-                  <img src={certImg} alt="Certificate" className="w-48 h-auto block object-cover" />
+                  <img 
+                    src={certImg} 
+                    alt="Certificate" 
+                    loading="lazy"
+                    decoding="async" // Prevents network paint ticks from hitching scrolls
+                    className="w-48 h-auto block object-cover" 
+                  />
                 </a>
                 <p className="text-gray-300 mt-2">{translations[language].certificateApproved}</p>
               </div>
