@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -21,28 +21,18 @@ const variants = {
     y: 100,
     scale: 0.96,
     filter: 'blur(14px)',
+    transition: {
+      duration: 0.75,
+      ease: [0.16, 1, 0.3, 1],
+    }
   },
-
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
     filter: 'blur(0px)',
-
     transition: {
       duration: 1.2,
-      ease: [0.16, 1, 0.3, 1],
-    },
-  },
-
-  exit: {
-    opacity: 0,
-    y: -50,
-    scale: 0.98,
-    filter: 'blur(10px)',
-
-    transition: {
-      duration: 0.75,
       ease: [0.16, 1, 0.3, 1],
     },
   },
@@ -63,8 +53,8 @@ class AnimatedSection extends Component {
         });
       },
       {
-        threshold: 0.18,
-        rootMargin: '-100px 0px -100px 0px',
+        threshold: 0.12, // Lowered slightly to capture incoming sections smoother
+        rootMargin: '-50px 0px -50px 0px', // Wider viewport sweet-spot
       }
     );
 
@@ -86,26 +76,25 @@ class AnimatedSection extends Component {
       <section
         id={id}
         ref={(el) => (this.container = el)}
+        className="transform-gpu" // Forces a unique composite rendering layer
         style={{
           minHeight: '100vh',
         }}
       >
-        <AnimatePresence mode="wait">
-          {this.state.visible && (
-            <motion.div
-              key={id}
-              variants={variants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              style={{
-                willChange: 'transform, opacity, filter',
-              }}
-            >
-              {children}
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* REMOVED AnimatePresence: Components now stay mounted in the DOM.
+          Visibility states toggle seamlessly via the animate property, preventing 
+          layout shifts, scroll rail calculation drops, and component rebuilds.
+        */}
+        <motion.div
+          variants={variants}
+          initial="hidden"
+          animate={this.state.visible ? "visible" : "hidden"}
+          style={{
+            willChange: 'transform, opacity, filter',
+          }}
+        >
+          {children}
+        </motion.div>
       </section>
     );
   }
@@ -122,16 +111,16 @@ class App extends Component {
           language === 'fa' ? 'lang-fa' : ''
         }`}
       >
-        <div className="dust-scene" aria-hidden="true" />
+        {/* Fixed ambient backgrounds isolated via transform-gpu */}
+        <div className="dust-scene transform-gpu" aria-hidden="true" />
 
         <SectionRail />
         <MobileSectionRail />
 
         <div className="relative z-10">
-
           <Navbar />
 
-          <section id="hero">
+          <section id="hero" className="transform-gpu">
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -167,13 +156,13 @@ class App extends Component {
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
+            viewport={{ once: true }} // Prevents refiring footer animations on tiny adjustments
             transition={{
               duration: 1,
             }}
           >
             <Footer />
           </motion.div>
-
         </div>
       </div>
     );
