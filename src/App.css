@@ -182,3 +182,19 @@
     border-right-color: var(--border);
   }
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overscroll-behavior: none;
+}
+
+/* GPU acceleration */
+
+section {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}

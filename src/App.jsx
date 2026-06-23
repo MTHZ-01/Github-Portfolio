@@ -1,89 +1,187 @@
-import React, { lazy, Suspense } from 'react';
-import { useSelector } from 'react-redux';
-import { motion } from 'framer-motion';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { motion, AnimatePresence } from 'framer-motion';
 
-// Keep critical structural layouts eager-loaded for immediate paint
 import Navbar from './components/Navbar';
-import Hero from './sections/Hero';
 import Footer from './components/Footer';
 
-// Lazy load scrolling sections so they only bundle/parse when needed
-const About = lazy(() => import('./sections/About'));
-const Projects = lazy(() => import('./sections/Projects'));
-const Research = lazy(() => import('./sections/Research'));
-const Honors = lazy(() => import('./sections/Honors')); // Added your new Honors component
-const Contact = lazy(() => import('./sections/Contact'));
+import Hero from './sections/Hero';
+import About from './sections/About';
+import Projects from './sections/Projects';
+import Research from './sections/Research';
+import Honors from './sections/Honors';
+import Contact from './sections/Contact';
 
-// Reusable Scroll Animation Wrapper Component
-const ScrollReveal = ({ children }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-120px 0px" }}
-      transition={{ duration: 0.7, ease: [0.21, 1.02, 0.43, 1.01] }}
-    >
-      {children}
-    </motion.div>
-  );
+import SectionRail from './components/SectionRail';
+import MobileSectionRail from './components/MobileSectionRail';
+
+const variants = {
+  hidden: {
+    opacity: 0,
+    y: 100,
+    scale: 0.96,
+    filter: 'blur(14px)',
+  },
+
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: 'blur(0px)',
+
+    transition: {
+      duration: 1.2,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+
+  exit: {
+    opacity: 0,
+    y: -50,
+    scale: 0.98,
+    filter: 'blur(10px)',
+
+    transition: {
+      duration: 0.75,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
 };
 
-// Simple Loading Fallback while lazy components mount
-const SectionLoader = () => (
-  <div className="h-48 w-full flex items-center justify-center">
-    <div className="w-6 h-6 border-2 border-gray-500 border-t-transparent rounded-full animate-spin" />
-  </div>
-);
+class AnimatedSection extends Component {
+  state = {
+    visible: false,
+  };
 
-function App() {
-  const { language } = useSelector((state) => state.theme);
+  observer = null;
 
-  return (
-    <div
-      dir={language === 'fa' ? 'rtl' : 'ltr'}
-      className={`min-h-screen bg-space-black text-gray-100 overflow-x-hidden relative ${
-        language === 'fa' ? 'lang-fa' : ''
-      }`}
-    >
-      {/* Background Effect */}
-      <div className="dust-scene" aria-hidden="true" />
+  componentDidMount() {
+    this.observer = new IntersectionObserver(
+      ([entry]) => {
+        this.setState({
+          visible: entry.isIntersecting,
+        });
+      },
+      {
+        threshold: 0.18,
+        rootMargin: '-100px 0px -100px 0px',
+      }
+    );
 
-      <div className="relative z-10">
-        <Navbar />
+    if (this.container) {
+      this.observer.observe(this.container);
+    }
+  }
 
-        {/* Hero stays eager & outside ScrollReveal for immediate interaction above-the-fold */}
-        <Hero />
+  componentWillUnmount() {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
 
-        {/* Safe progressive streaming of lower components */}
-        <Suspense fallback={<SectionLoader />}>
-          
-          <ScrollReveal>
-            <About />
-          </ScrollReveal>
+  render() {
+    const { children, id } = this.props;
 
-          <ScrollReveal>
-            <Projects />
-          </ScrollReveal>
-
-          <ScrollReveal>
-            <Research />
-          </ScrollReveal>
-
-          {/* Integrated Honors Section */}
-          <ScrollReveal>
-            <Honors />
-          </ScrollReveal>
-
-          <ScrollReveal>
-            <Contact />
-          </ScrollReveal>
-
-        </Suspense>
-
-        <Footer />
-      </div>
-    </div>
-  );
+    return (
+      <section
+        id={id}
+        ref={(el) => (this.container = el)}
+        style={{
+          minHeight: '100vh',
+        }}
+      >
+        <AnimatePresence mode="wait">
+          {this.state.visible && (
+            <motion.div
+              key={id}
+              variants={variants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              style={{
+                willChange: 'transform, opacity, filter',
+              }}
+            >
+              {children}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </section>
+    );
+  }
 }
 
-export default App;
+class App extends Component {
+  render() {
+    const { language } = this.props;
+
+    return (
+      <div
+        dir={language === 'fa' ? 'rtl' : 'ltr'}
+        className={`min-h-screen bg-space-black text-gray-100 overflow-x-hidden relative ${
+          language === 'fa' ? 'lang-fa' : ''
+        }`}
+      >
+        <div className="dust-scene" aria-hidden="true" />
+
+        <SectionRail />
+        <MobileSectionRail />
+
+        <div className="relative z-10">
+
+          <Navbar />
+
+          <section id="hero">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                duration: 1.3,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+            >
+              <Hero />
+            </motion.div>
+          </section>
+
+          <AnimatedSection id="about">
+            <About />
+          </AnimatedSection>
+
+          <AnimatedSection id="projects">
+            <Projects />
+          </AnimatedSection>
+
+          <AnimatedSection id="research">
+            <Research />
+          </AnimatedSection>
+
+          <AnimatedSection id="honors">
+            <Honors />
+          </AnimatedSection>
+
+          <AnimatedSection id="contact">
+            <Contact />
+          </AnimatedSection>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{
+              duration: 1,
+            }}
+          >
+            <Footer />
+          </motion.div>
+
+        </div>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  language: state.theme.language,
+});
+
+export default connect(mapStateToProps)(App);
