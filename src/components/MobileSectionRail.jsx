@@ -1,41 +1,44 @@
 import React, { Component } from 'react';
-import { motion } from 'framer-motion';
+import { connect } from 'react-redux';
+import { motion, AnimatePresence } from 'framer-motion';
+import translations from '../i18n'; 
 
 const sections = [
-  { id: 'hero' },
-  { id: 'about' },
-  { id: 'projects' },
-  { id: 'research' },
-  { id: 'honors' },
-  { id: 'contact' },
+  { id: 'hero', key: 'hero' },
+  { id: 'about', key: 'about' },
+  { id: 'projects', key: 'projects' },
+  { id: 'research', key: 'research' },
+  { id: 'honors', key: 'honors' },
+  { id: 'contact', key: 'contact' },
 ];
 
 class MobileSectionRail extends Component {
   state = {
     active: 'hero',
+    hoveredId: null, // Keeps hover/touch title triggers responsive
   };
 
   observer = null;
+  isScrollingClick = false; // Lock flag to prioritize taps over observer fights
+  lockTimeout = null;
 
   componentDidMount() {
     this.observer = new IntersectionObserver(
       (entries) => {
-        // Find the single section that has currently crossed the viewport window
+        // If the scroll was triggered by a physical tap, let goTo handle the active state
+        if (this.isScrollingClick) return;
+
         const visibleEntry = entries.find((entry) => entry.isIntersecting);
-        
         if (visibleEntry) {
           const newActiveId = visibleEntry.target.id;
-          
-          // Throttling Guard: Prevents rapid re-renders if scrolling within the same section
           if (this.state.active !== newActiveId) {
             this.setState({ active: newActiveId });
           }
         }
       },
       {
-        // 0.20 threshold captures the incoming section layout early for mobile environments
-        threshold: 0.20,
-        rootMargin: '-25% 0px -35% 0px', // Perfectly centers the intersection target zone
+        threshold: 0.15,
+        rootMargin: '-30% 0px -35% 0px',
       }
     );
 
@@ -47,55 +50,149 @@ class MobileSectionRail extends Component {
 
   componentWillUnmount() {
     if (this.observer) this.observer.disconnect();
+    if (this.lockTimeout) clearTimeout(this.lockTimeout);
   }
 
   goTo = (id) => {
+    // 1. Force state selection to snap immediately
+    this.isScrollingClick = true;
+    this.setState({ active: id });
+
+    // 2. Smoothly scroll container view to target section bounds
     document.getElementById(id)?.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
     });
+
+    // 3. Set a fallback release lock once smooth animation completes
+    if (this.lockTimeout) clearTimeout(this.lockTimeout);
+    this.lockTimeout = setTimeout(() => {
+      this.isScrollingClick = false;
+    }, 800);
   };
 
   render() {
+    const { language } = this.props;
+    const isRtl = language === 'fa';
+    const activeIndex = sections.findIndex(s => s.id === this.state.active);
+
     return (
-      <div className="md:hidden fixed bottom-5 right-4 z-[999] transform-gpu">
+      <div 
+        className={`md:hidden fixed bottom-8 z-[999] transform-gpu transition-all duration-300 ${
+          isRtl ? 'left-6' : 'right-6'
+        }`}
+      >
+        {/* Monolithic Outer Dock Shell with Deep Frosted Glass */}
         <div
           className="
-            px-3 py-3
-            rounded-2xl
-            bg-white/[0.03]
-            border border-white/[0.045]
-            backdrop-blur-2xl
-            shadow-[0_8px_30px_rgba(255,255,255,0.025)]
+            relative
+            px-2.5 py-4
+            rounded-full
+            bg-black/40
+            backdrop-blur-xl
+            border border-white/5
+            shadow-[0_25px_60px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.08)]
           "
         >
-          <div className="flex flex-col gap-4">
+          {/* Grok Solid Kinetic Fluid Block */}
+          <motion.div
+            className="absolute left-2.5 right-2.5 bg-white rounded-full z-0 shadow-[0_0_20px_rgba(255,255,255,0.25)]"
+            animate={{
+              top: `${(activeIndex * 32) + 16}px`, 
+              height: '14px',
+            }}
+            transition={{
+              type: 'spring',
+              stiffness: 500,
+              damping: 28,
+            }}
+            style={{ willChange: 'top, height' }}
+          />
+
+          {/* Interactive Track Matrix */}
+          <div className="relative flex flex-col gap-[18px] z-10">
             {sections.map((section) => {
               const active = this.state.active === section.id;
+              const isHovered = this.state.hoveredId === section.id;
+              
+              // Safe localized translations lookup
+              const currentDict = translations[language] || {};
+              const labelText = currentDict[section.key] || currentDict[section.id] || section.id;
 
               return (
                 <div
                   key={section.id}
                   onClick={() => this.goTo(section.id)}
-                  className="cursor-pointer flex justify-center items-center h-3 relative"
+                  onTouchStart={() => this.setState({ hoveredId: section.id })}
+                  onTouchEnd={() => setTimeout(() => this.setState({ hoveredId: null }), 1000)} // Tooltip auto-fades after 1s on mobile touch
+                  onMouseEnter={() => this.setState({ hoveredId: section.id })}
+                  onMouseLeave={() => this.setState({ hoveredId: null })}
+                  className="relative flex justify-center items-center w-3.5 h-3.5 cursor-pointer"
                 >
+                  {/* Background node dot */}
                   <motion.div
                     animate={{
-                      scaleX: active ? 3.1 : 1,
-                      opacity: active ? 1 : 0.32,
+                      scale: active ? 0 : 1,
+                      opacity: active ? 0 : isHovered ? 0.7 : 0.3,
                     }}
-                    transition={{
-                      duration: 0.4,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
-                    style={{
-                      willChange: 'transform, opacity',
-                    }}
-                    className={`
-                      h-[2px] w-[11px] origin-center rounded-full bg-white
-                      ${active ? 'shadow-[0_0_10px_rgba(255,255,255,0.22)]' : ''}
-                    `}
+                    transition={{ duration: 0.15 }}
+                    className="w-1 h-1 rounded-full bg-white"
                   />
+
+                  {/* SpaceX Hardware Target Lock Line (Inverted to the outside edge) */}
+                  {active && (
+                    <motion.div 
+                      layoutId="spacexCrosshair"
+                      className={`absolute top-1/2 -translate-y-1/2 w-1.5 h-[1px] bg-white/80 ${
+                        isRtl ? '-left-3.5' : '-right-3.5'
+                      }`}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 450,
+                        damping: 30
+                      }}
+                    />
+                  )}
+
+                  {/* Micro Futuristic Floating Mobile Titles */}
+                  <AnimatePresence>
+                    {isHovered && (
+                      <motion.div
+                        initial={{ 
+                          opacity: 0, 
+                          x: isRtl ? 10 : -10,
+                          scale: 0.92 
+                        }}
+                        animate={{ 
+                          opacity: 1, 
+                          x: isRtl ? 22 : -22,
+                          scale: 1 
+                        }}
+                        exit={{ 
+                          opacity: 0, 
+                          x: isRtl ? 8 : -8,
+                          scale: 0.95,
+                          transition: { duration: 0.1 }
+                        }}
+                        transition={{ 
+                          type: 'spring', 
+                          stiffness: 500, 
+                          damping: 24 
+                        }}
+                        style={{
+                          transformOrigin: isRtl ? 'left center' : 'right center',
+                          fontFamily: isRtl ? 'Vazirmatn, system-ui, sans-serif' : 'ui-monospace, SFMono-Regular, monospace'
+                        }}
+                        className={`
+                          absolute pointer-events-none whitespace-nowrap text-[9px] font-bold tracking-wider uppercase
+                          bg-black/90 px-2 py-0.5 rounded border border-white/10 shadow-xl backdrop-blur-md text-white/90
+                          ${isRtl ? 'left-full text-right' : 'right-full text-right'}
+                        `}
+                      >
+                        {labelText}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               );
             })}
@@ -106,4 +203,8 @@ class MobileSectionRail extends Component {
   }
 }
 
-export default MobileSectionRail;
+const mapStateToProps = (state) => ({
+  language: state.theme.language,
+});
+
+export default connect(mapStateToProps)(MobileSectionRail);
