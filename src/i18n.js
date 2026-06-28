@@ -5,48 +5,91 @@ const translations = {
     contact: 'تماس',
     viewProjects: 'مشاهده پروژه‌ها',
     github: 'گیت‌هاب',
+
     buildingFuture: 'ساخت آینده',
-    description: 'توسعه‌دهنده فول‌استک و حل‌کننده مسائل — طراحی با الهام از SpaceX و Grok',
+
+    description:
+      'توسعه‌دهنده فول‌استک با تمرکز بر توسعه وب، هوش مصنوعی و اتوماسیون.',
+
     aboutTitle: 'درباره من',
-    aboutParagraph1: 'من توسعه‌دهنده‌ای مشتاق هستم که به ساخت برنامه‌های وب سریع، زیبا و مقیاس‌پذیر علاقه‌مند است. دنبال کدنویسی تمیز، تجربه کاربری عالی و گسترش مرزهای ممکن هستم.',
-    aboutParagraph2: 'در حال حاضر در حوزه‌های وب مدرن، ابزارهای هوش مصنوعی و بهینه‌سازی عملکرد فعالیت می‌کنم.',
+
+    aboutParagraph1:
+      'من توسعه‌دهنده فول‌استکی هستم که به ساخت نرم‌افزارهای سریع، مقیاس‌پذیر و باکیفیت علاقه‌مندم. تمرکز من بر توسعه وب، هوش مصنوعی، اتوماسیون و ارائه راهکارهای کاربردی است.',
+
+    aboutParagraph2:
+      'محل: کشور ایران',
+
     featuredProduct: 'محصول منتخب',
-    certificateApproved: 'تأیید شده در پارک علم و فناوری دانشگاه گیلان',
+
+    // New achievements
+    achievement1: 'برگزیده طرح شهید وزوایی بنیاد ملی نخبگان (دو دوره)',
+    achievement2: 'برگزیده جایزه ابریشمچیان بنیاد ملی نخبگان',
+    achievement3: 'عضو هسته فناور مستقر در پارک علم و فناوری استان گیلان',
+    achievement4: 'دارای محصول دانش‌بنیان با سطح آمادگی فناوری (TRL) ۵',
+
     noRepos: 'هیچ مخزنی یافت نشد.',
+
     contactTitle: 'بیایید با هم بسازیم',
-    contactSubtitle: 'یک پروژه در ذهن دارید؟ می‌خواهید همکاری کنید؟ یا فقط سلام دهید؟',
+    contactSubtitle:
+      'پروژه‌ای در ذهن دارید؟ مایل به همکاری هستید؟ یا فقط می‌خواهید سلام کنید؟',
     contactCTA: 'یا فقط یک پیام برای من بفرستید ↓',
-    footerConnect: 'با من تماس بگیرید',
+
+    footerConnect: 'با من در ارتباط باشید',
     telegram: 'تلگرام',
     x: 'ایکس',
     linkedin: 'لینکدین',
     github: 'گیت‌هاب',
+
     footerCopy: 'ساخته شده با React + Vite + Redux.',
-    footerInspired: 'الهام‌گرفته از SpaceX و Grok'
+    footerInspired: ''
   },
+
   en: {
     about: 'About',
     projects: 'Projects',
     contact: 'Contact',
     viewProjects: 'View Projects',
     github: 'GitHub',
+
     buildingFuture: 'BUILDING THE FUTURE',
-    description: 'Full Stack Developer & Problem Solver — inspired by SpaceX and Grok design language.',
+
+    description:
+      'Full Stack Developer specializing in Web Development, Artificial Intelligence, and Automation.',
+
     aboutTitle: 'About Me',
-    aboutParagraph1: "I'm a passionate developer who loves building fast, beautiful, and scalable web applications. Obsessed with clean code, great UX, and pushing the boundaries of what's possible.",
-    aboutParagraph2: 'Currently exploring modern web technologies, AI tools, and performance optimization.',
-    featuredProduct: 'Selected Product',
-    certificateApproved: 'Approved at Guilan University Technology Park',
+
+    aboutParagraph1:
+      "I'm a Full Stack Developer passionate about building fast, scalable, and high-quality software. My primary focus is modern web development, artificial intelligence, automation, and delivering practical solutions.",
+
+    aboutParagraph2:
+      'Location: Iran',
+
+    featuredProduct: 'Featured Product',
+
+    // New achievements
+    achievement1:
+      'Selected for the Shahid Vezvaei Program of the National Elites Foundation (Two Terms)',
+    achievement2:
+      'Recipient of the Ebrishamchian Award from the National Elites Foundation',
+    achievement3:
+      'Member of a Technology Core at Guilan Province Science and Technology Park',
+    achievement4:
+      'Developer of a Knowledge-Based Product with Technology Readiness Level (TRL) 5',
+
     noRepos: 'No repositories found.',
+
     contactTitle: "Let's Build Together",
-    contactSubtitle: 'Have a project in mind? Want to collaborate? Or just say hi?',
-    contactCTA: 'Or just shoot me a message below ↓',
+    contactSubtitle:
+      'Have a project in mind? Want to collaborate? Or just say hello?',
+    contactCTA: 'Or simply send me a message below ↓',
+
     footerConnect: 'Connect with me',
     telegram: 'Telegram',
     x: 'X',
     linkedin: 'LinkedIn',
+
     footerCopy: 'Built with React + Vite + Redux.',
-    footerInspired: 'Inspired by SpaceX & Grok'
+    footerInspired: ''
   }
 };
 
